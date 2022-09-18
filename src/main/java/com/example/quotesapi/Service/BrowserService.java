@@ -11,16 +11,21 @@ import org.springframework.stereotype.Service;
 
 
 @Service
-public class BrowserService {
+public class BrowserService implements Mapper {
 
     @Autowired
     private BrowserRepository browserRepository;
 
     @Autowired
     QuoteRepository quoteRepository;
-    public void quoteBrowserMapper(Long browserId, Long quoteID) {
-        Browser browser =browserRepository.findById(browserId).get();
-        browser.quoteBrowserMapper(quoteRepository.findById(quoteID).get());
+//    public void quoteBrowserMapper(Long browserId, Long quoteID) {
+//
+//    }
+
+    @Override
+    public void quoteMapper(Long ConfigId, Long QuoteID) {
+        Browser browser =browserRepository.findById(ConfigId).get();
+        browser.quoteBrowserMapper(quoteRepository.findById(QuoteID).get());
         browserRepository.save(browser);
 
     }

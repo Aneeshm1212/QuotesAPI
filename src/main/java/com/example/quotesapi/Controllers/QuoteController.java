@@ -53,11 +53,12 @@ public class QuoteController {
     @GetMapping("/rand")
     Object quoteGetter(@RequestParam(required = false) Long country , Long browser ){
         try {
+            System.out.println();
             return quoteService.quoteGetter(country,browser);
         }
         catch (Exception e) {
             System.out.println(e);
-            return e;
+            return null;
         }
         }
 

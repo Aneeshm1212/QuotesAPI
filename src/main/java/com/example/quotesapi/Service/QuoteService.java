@@ -4,16 +4,14 @@ import com.example.quotesapi.Model.Quote;
 import com.example.quotesapi.Repository.BrowserRepository;
 import com.example.quotesapi.Repository.CountryRepository;
 import com.example.quotesapi.Repository.QuoteRepository;
-import com.sun.org.apache.xalan.internal.lib.ExsltSets;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 @Service
-public class QuoteService {
+public class QuoteService implements Configs {
+
 
     @Autowired
     private QuoteRepository quoteRepository;
@@ -39,35 +37,55 @@ public class QuoteService {
     }
 
 
-    public Object quoteGetter(Long country , Long browser) {
-        try{
-           // System.out.println(country + " " + browser);
-        if(country!=null && browser==null){
+
+    @Override
+    public Quote quoteRandomly() {
+        return quoteRepository.findById((long)(Math.random()*quoteRepository.count())).get();
+    }
+
+    @Override
+    public Set<Quote> quoteByBrowser(Long browser) {
+        return browserRepository.findById((browser)).get().BrowserSpecificQuotes;
+
+    }
+
+    @Override
+    public Quote quoteByBrowserAndCountry(Long browser,Long country) {
+        return quoteRepository.QueryWithCountryAndBrowser(browser,country);
+    }
+
+    @Override
+    public Set<Quote> quoteByCountry(Long country) {
         return countryRepository.findById(country).get().CountrySpecificQuotes;
-        }
-        else if(browser!=null && country==null){
-            return browserRepository.findById((browser)).get().BrowserSpecificQuotes;
-        }
-        else if(browser!=null && country!=null){
-            Set<Quote> countrySpecificNotes= countryRepository.findById(country).get().CountrySpecificQuotes;
-            Set<Quote> browserSpecificNotes =browserRepository.findById((browser)).get().BrowserSpecificQuotes;
-
-            countrySpecificNotes.retainAll(browserSpecificNotes);
-            //System.out.println(countrySpecificNotes);
-            return countrySpecificNotes;
-
-        }
-        else{
-        int id = (int)(Math.random()*quoteRepository.count()) ;
-        return quoteRepository.findById((long)id);
-    }}
-        catch (Exception e){
-            //System.out.println(e);
-            int id = (int)(Math.random()*quoteRepository.count()) ;
-            return quoteRepository.findById((long)id);
-            }
     }
 
 
 
+
+    public Object quoteGetter(Long country , Long browser) {
+        try {
+            if(country!=null && browser!=null){
+                Quote q =quoteByBrowserAndCountry(browser,country);
+                if(q != null){
+                    return q;
+                }
+                else {
+                    return quoteRandomly();
+                }
+            }
+            else if (browser!=null) {
+                return quoteByBrowser(browser);
+            }
+            else if (country!=null) {
+                return quoteByCountry(country);
+            }
+            else{
+                return quoteRandomly();
+            }
+        }
+        catch (Exception e)
+        {
+         return quoteRandomly();
+        }
+    }
 }

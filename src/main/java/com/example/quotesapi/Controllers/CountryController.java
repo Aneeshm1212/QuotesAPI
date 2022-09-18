@@ -13,7 +13,7 @@ public class CountryController {
     @GetMapping  ("/api/country/quoteCountryMapper")
     String quoteCountryMapper(@RequestParam Long CountryId,Long QuoteID){
         try{
-        countryService.quoteCountryMapper(CountryId,QuoteID);
+        countryService.quoteMapper(CountryId,QuoteID);
         return "SUCCESS";
         }
         catch (Exception e){

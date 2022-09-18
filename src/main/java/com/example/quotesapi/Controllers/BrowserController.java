@@ -15,7 +15,7 @@ public class BrowserController {
     @GetMapping("/api/browser/quoteBrowserMapper")
         String quoteBrowserMapper(@RequestParam Long BrowserId, Long QuoteID){
         try{
-            browserService.quoteBrowserMapper(BrowserId,QuoteID);
+            browserService.quoteMapper(BrowserId,QuoteID);
             return "SUCCESS";
         }
         catch (Exception e){
