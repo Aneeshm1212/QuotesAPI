@@ -3,8 +3,10 @@ package com.example.quotesapi.Controllers;
 import com.example.quotesapi.Model.Browser;
 import com.example.quotesapi.Model.Country;
 import com.example.quotesapi.Model.Quote;
+import com.example.quotesapi.Service.ExceptionHandler;
 import com.example.quotesapi.Service.QuoteService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -51,13 +53,12 @@ public class QuoteController {
 
 
     @GetMapping("/rand")
-    Object quoteGetter(@RequestParam(required = false) Long country , Long browser ){
+    Object quoteGetter(@RequestParam(required = false)  Long country , Long browser ){
         try {
-            System.out.println();
             return quoteService.quoteGetter(country,browser);
         }
         catch (Exception e) {
-            System.out.println(e);
+            //System.out.println(e);
             return null;
         }
         }

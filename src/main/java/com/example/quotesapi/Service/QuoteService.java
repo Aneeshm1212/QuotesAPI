@@ -64,6 +64,7 @@ public class QuoteService implements Configs {
 
     public Object quoteGetter(Long country , Long browser) {
         try {
+
             if(country!=null && browser!=null){
                 Quote q =quoteByBrowserAndCountry(browser,country);
                 if(q != null){
@@ -80,6 +81,7 @@ public class QuoteService implements Configs {
                 return quoteByCountry(country);
             }
             else{
+               // System.out.println("SS");
                 return quoteRandomly();
             }
         }
